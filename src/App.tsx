@@ -29,8 +29,12 @@ function App() {
         setTasks(filteredTasks)
     }
 
-    function changeFilter(value: FilterValuesType) {
-        setFilter(value)
+    function changeFilter(value: FilterValuesType, todoListId: string) {
+        let todoList = todoLists.find(tl => tl.id === todoListId)
+        if(todoList) {
+            todoList.filter = value;
+            setTodoLists([...todoLists])
+        }
     }
 
     function changeStatus(taskId: string, isDone: boolean) {
@@ -51,19 +55,10 @@ function App() {
         setTasks([newTask, ...tasks])
     }
 
-    // let tasksForToDoList = tasks
-    //
-    // if (filter === "active") {
-    //     tasksForToDoList = tasks.filter( t => t.isDone === false) //the same !t.isDone
-    // }
-    // if (filter === "completed") {
-    //     tasksForToDoList = tasks.filter( t => t.isDone === true) // the same t.isDone
-    // }
-
-    const todoLists: Array<todoListType> = [
+    const [todoLists, setTodoLists] = useState<Array<todoListType>>([
         {id: v1(), title: "What to learn", filter: "active"},
         {id: v1(), title: "What to buy", filter: "completed"}
-    ]
+    ])
 
     return (
         <div className="App">
@@ -77,7 +72,10 @@ function App() {
                     if (tl.filter === "completed") {
                         tasksForToDoList = tasks.filter( t => t.isDone === true) // the same t.isDone
                     }
-                    return <TodoList title={tl.title}
+                    return <TodoList
+                                     key={tl.id}
+                                     id={tl.id}
+                                     title={tl.title}
                                      tasks={tasksForToDoList}
                                      addTask={addTask}
                                      removeTask={removeTask}
