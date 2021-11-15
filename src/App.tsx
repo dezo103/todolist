@@ -15,7 +15,7 @@ type todoListType = {
 
 function App() {
 
-    let [filter, setFilter] = useState<FilterValuesType>("all")
+    // let [filter, setFilter] = useState<FilterValuesType>("all")
 
     function removeTask(id: string, todolistId: string) {
         let tasks = tasksObj[todolistId]
@@ -58,6 +58,13 @@ function App() {
         {id: todolistId2, title: "What to buy", filter: "completed"}
     ])
 
+    const removeTodoList = (todolistId: string) => {
+        let filteredTodolists = todoLists.filter(tl => tl.id !== todolistId)
+        setTodoLists(filteredTodolists)
+        delete tasksObj[todolistId]
+        setTasks({...tasksObj})
+    }
+
     let [tasksObj, setTasks] = useState({
         [todolistId1]: [
             {id: v1(), title: "HTML", isDone: true},
@@ -94,6 +101,7 @@ function App() {
                         changeFilter={changeFilter}
                         changeTaskStatus={changeStatus}
                         filter={tl.filter}
+                        removeTodoList={removeTodoList}
                     />
                 })
             }
