@@ -1,5 +1,6 @@
-import React, {useState, KeyboardEvent, ChangeEvent} from "react";
+import React, {ChangeEvent} from "react";
 import {FilterValuesType} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
 export type TasksType = {
     id: string
@@ -22,26 +23,6 @@ type PropsType = {
 
 
 export const TodoList = (props: PropsType) => {
-
-    const [title, setTitle] = useState<string>("")
-    let [error, setError] = useState<string | null>(null)
-
-    const onClickAddTaskToTodoList = () => {
-            if (title.trim() !== "") {
-                props.addTask(title.trim(), props.id);
-                setTitle("");
-            }
-            else {
-                setError("Title is required")
-            }
-    }
-    const onKeyPressAddTaskToTodoList = (e: KeyboardEvent) => {
-        setError(null)
-        if (e.key === "Enter") {
-            onClickAddTaskToTodoList()
-        }
-    }
-    const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
     const onClickSetAllFilter = () => {props.changeFilter("all", props.id)}
     const onClickSetActiveFilter = () => {props.changeFilter("active", props.id)}
     const onClickSetCompletedFilter = () => {props.changeFilter("completed", props.id)}
@@ -50,17 +31,7 @@ export const TodoList = (props: PropsType) => {
     return (
         <div>
             <h3>{props.title}<button onClick={removeTodoList}>x</button></h3>
-            <div>
-                <input
-                    placeholder={"enter new task"}
-                    onChange={onChangeSetTitle}
-                    value={title}
-                    onKeyPress={onKeyPressAddTaskToTodoList}
-                    className={error ? "error" : ""}
-                />
-                <button onClick={onClickAddTaskToTodoList}>+</button>
-                { error && <div className="error-message">{error}</div>}
-            </div>
+            <AddItemForm addItem={props.addTask} id={props.id}/>
             <ul>
                 {
                     props.tasks.map(t => {
@@ -91,3 +62,4 @@ export const TodoList = (props: PropsType) => {
     )
 
 }
+
