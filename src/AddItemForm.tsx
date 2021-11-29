@@ -1,10 +1,9 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
-type AddItemFormType = {
-    addItem: (title: string, todolistId: string) => void
-    id: string
+type AddItemFormPropsType = {
+    addItem: (title: string) => void
 }
-export const AddItemForm = (props: AddItemFormType) => {
+export const AddItemForm = (props: AddItemFormPropsType) => {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
     const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
@@ -16,7 +15,7 @@ export const AddItemForm = (props: AddItemFormType) => {
     }
     const onClickAddTaskToTodoList = () => {
         if (title.trim() !== "") {
-            props.addItem(title.trim(), props.id);
+            props.addItem(title.trim());
             setTitle("");
         } else {
             setError("Title is required")
@@ -26,7 +25,7 @@ export const AddItemForm = (props: AddItemFormType) => {
     return (
         <div>
             <input
-                placeholder={"enter new task"}
+                placeholder={"enter title"}
                 onChange={onChangeSetTitle}
                 value={title}
                 onKeyPress={onKeyPressAddTaskToTodoList}
