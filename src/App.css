@@ -5,8 +5,8 @@
 
 .App > div {
   margin-right: 50px;
-  border: 1px solid gray;
-  border-radius: 5px;
+  /*border: 1px solid gray;*/
+  /*border-radius: 5px;*/
   padding: 30px;
 }
 
@@ -18,9 +18,9 @@
     color: red;
 }
 
-.active-filter {
-    background-color: aquamarine;
-}
+/*.active-filter {*/
+/*    background-color: aquamarine;*/
+/*}*/
 
 .is-done {
     opacity: 0.5;
