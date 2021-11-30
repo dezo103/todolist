@@ -86,8 +86,7 @@ export const TodoList = (props: PropsType) => {
             <div>
                 <ButtonGroup variant={"contained"}
                              size={"small"}
-                             fullWidth
-                >
+                             fullWidth>
                     <Button color={props.filter === "all" ? "secondary" : "primary"}
                             onClick={onClickSetAllFilter}>All</Button>
                     <Button color={props.filter === "active" ? "secondary" : "primary"}

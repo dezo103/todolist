@@ -36,19 +36,10 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 error={!!error}
                 helperText={error}
             />
-            {/*<input*/}
-            {/*    placeholder={"enter title"}*/}
-            {/*    onChange={onChangeSetTitle}*/}
-            {/*    value={title}*/}
-            {/*    onKeyPress={onKeyPressAddTaskToTodoList}*/}
-            {/*    className={error ? "error" : ""}*/}
-            {/*/>*/}
             <IconButton onClick={onClickAddTaskToTodoList}
                         color={"primary"}>
                 <AddBox/>
             </IconButton>
-            {/*<button onClick={onClickAddTaskToTodoList}>+</button>*/}
-            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     )
 }
