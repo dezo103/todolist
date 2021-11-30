@@ -34,6 +34,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 onKeyPress={onKeyPressAddTaskToTodoList}
                 label={"Title"}
                 error={!!error}
+                helperText={error}
             />
             {/*<input*/}
             {/*    placeholder={"enter title"}*/}
@@ -47,7 +48,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 <AddBox/>
             </IconButton>
             {/*<button onClick={onClickAddTaskToTodoList}>+</button>*/}
-            {error && <div className="error-message">{error}</div>}
+            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     )
 }
