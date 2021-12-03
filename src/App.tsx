@@ -69,6 +69,7 @@ function App() {
         delete tasksObj[todolistId]
         setTasks({...tasksObj})
     }
+
     const changeTodolistTitle = (id: string, newTitle: string) => {
         const todoList = todoLists.find(tl => tl.id === id)
         if (todoList) {
