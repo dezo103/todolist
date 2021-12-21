@@ -13,6 +13,8 @@ import {
     todolistsReducer
 } from "./state/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
 
 export type FilterValuesType = "all" | "completed" | "active"
 
@@ -26,59 +28,61 @@ export type TasksStateType = {
     [key: string]: Array<TasksType>
 }
 
-function AppWithReducers() {
+function AppWithRedux() {
     function removeTask(id: string, todolistId: string) {
-        dispatchToTasksReducer(removeTaskAC(id, todolistId))
+        dispatch(removeTaskAC(id, todolistId))
     }
     function addTask(title: string, todolistId: string) {
-        dispatchToTasksReducer(addTaskAC(title, todolistId))
+        dispatch(addTaskAC(title, todolistId))
     }
     function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
-        dispatchToTasksReducer(changeTaskStatusAC(taskId, isDone, todolistId))
+        dispatch(changeTaskStatusAC(taskId, isDone, todolistId))
     }
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
-        dispatchToTasksReducer(changeTaskTitleAC(taskId, newTitle, todolistId))
+        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId))
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatchToTodoListsReducer(changeTodolistFilterAC(value, todolistId))
+        dispatch(changeTodolistFilterAC(value, todolistId))
     }
     const changeTodolistTitle = (id: string, newTitle: string) => {
-        dispatchToTodoListsReducer(changeTodolistAC(id, newTitle))
+        dispatch(changeTodolistAC(id, newTitle))
 
     }
     const removeTodoList = (todolistId: string) => {
         const action = removeTodolistAC(todolistId)
-        dispatchToTodoListsReducer(action)
-        dispatchToTasksReducer(action)
+        dispatch(action)
     }
     function addTodoList(title: string) {
         const action = addTodolistAC(title)
-        dispatchToTodoListsReducer(action)
-        dispatchToTasksReducer(action)
+        dispatch(action)
     }
 
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    // let todolistId1 = v1()
+    // let todolistId2 = v1()
 
-    const [todoLists, dispatchToTodoListsReducer] = useReducer(todolistsReducer, [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
-    ])
+    const dispatch = useDispatch()
+    const todoLists = useSelector<AppRootState, Array<todoListType>>(state => state.todolists)
+    const tasksObj = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
-    let [tasksObj, dispatchToTasksReducer] = useReducer(tasksReducer, {
-        [todolistId1]: [
-            {id: v1(), title: "HTML", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "React", isDone: false},
-            {id: v1(), title: "REST API", isDone: false},
-            {id: v1(), title: "GraphQL", isDone: false}
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Book", isDone: false},
-            {id: v1(), title: "Milk", isDone: true},
-        ]
-    });
+    // const [todoLists] = useReducer(todolistsReducer, [
+    //     {id: todolistId1, title: "What to learn", filter: "all"},
+    //     {id: todolistId2, title: "What to buy", filter: "all"}
+    // ])
+
+    // let [tasksObj] = useReducer(tasksReducer, {
+    //     [todolistId1]: [
+    //         {id: v1(), title: "HTML", isDone: true},
+    //         {id: v1(), title: "JS", isDone: true},
+    //         {id: v1(), title: "React", isDone: false},
+    //         {id: v1(), title: "REST API", isDone: false},
+    //         {id: v1(), title: "GraphQL", isDone: false}
+    //     ],
+    //     [todolistId2]: [
+    //         {id: v1(), title: "Book", isDone: false},
+    //         {id: v1(), title: "Milk", isDone: true},
+    //     ]
+    // });
 
 
     return (
@@ -135,4 +139,4 @@ function AppWithReducers() {
     );
 }
 
-export default AppWithReducers;
+export default AppWithRedux;
