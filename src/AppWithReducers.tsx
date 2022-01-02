@@ -15,13 +15,11 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 
 export type FilterValuesType = "all" | "completed" | "active"
-
 export type todoListType = {
     id: string
     title: string,
     filter: FilterValuesType
 }
-
 export type TasksStateType = {
     [key: string]: Array<TasksType>
 }
