@@ -25,6 +25,7 @@ type PropsType = {
 }
 
 export const TodoList = (props: PropsType) => {
+    console.log("TodoList")
     const onClickSetAllFilter = () => {
         props.changeFilter("all", props.id)
     }
