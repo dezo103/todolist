@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React, {useCallback} from "react";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from "@material-ui/core";
+import {Button, ButtonGroup, IconButton, List, Typography} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {Task} from "./Task";
 
 export type TasksType = {
     id: string
@@ -26,23 +27,34 @@ type PropsType = {
 
 export const TodoList = React.memo((props: PropsType) => {
     console.log("TodoList")
-    const onClickSetAllFilter = () => {
+
+    const onClickSetAllFilter = useCallback(() => {
         props.changeFilter("all", props.id)
-    }
-    const onClickSetActiveFilter = () => {
+    },[props.changeFilter, props.id])
+    const onClickSetActiveFilter = useCallback(() => {
         props.changeFilter("active", props.id)
-    }
-    const onClickSetCompletedFilter = () => {
+    },[props.changeFilter, props.id])
+    const onClickSetCompletedFilter = useCallback(() => {
         props.changeFilter("completed", props.id)
-    }
+    },[props.changeFilter, props.id])
+
     const removeTodoList = () => {
         props.removeTodoList(props.id)
     }
-    const addTask = (title: string) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
-    }
-    const changeTodolistTitle = (newTitle: string) => {
+    }, [props.addTask, props.id])
+    const changeTodolistTitle = useCallback((newTitle: string) => {
         props.changeTodolistTitle(props.id, newTitle)
+    }, [props.changeTodolistTitle, props.id])
+
+    let tasksForToDoList = props.tasks
+
+    if (props.filter === "active") {
+        tasksForToDoList = props.tasks.filter(t => t.isDone === false) //the same !t.isDone
+    }
+    if (props.filter === "completed") {
+        tasksForToDoList = props.tasks.filter(t => t.isDone === true) // the same t.isDone
     }
 
     return (
@@ -56,32 +68,14 @@ export const TodoList = React.memo((props: PropsType) => {
             <AddItemForm addItem={addTask}/>
             <List>
                 {
-                    props.tasks.map(t => {
-                        const onClickHandler = () => {
-                            props.removeTask(t.id, props.id)
-                        }
-                        const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
-                        }
-                        const onChangeTitleHandler = (newValue: string) => {
-                            props.changeTaskTitle(t.id, newValue, props.id)
-                        }
-                        return <ListItem
-                            divider
-                            key={t.id}
-                            className={t.isDone ? "is-done" : ""}
-                            style={{display: "flex", justifyContent: "space-between", padding: "0"}}>
-                            <Checkbox color={"primary"}
-                                      checked={t.isDone}
-                                      onChange={onChangeStatusHandler}/>
-                            <EditableSpan
-                                title={t.title}
-                                onChange={onChangeTitleHandler}/>
-                            <IconButton onClick={onClickHandler}>
-                                <Delete fontSize={"small"}/>
-                            </IconButton>
-                        </ListItem>
-                    })
+                    tasksForToDoList.map(t => <Task
+                        key = {t.id}
+                        removeTask = {props.removeTask}
+                        changeTaskStatus = {props.changeTaskStatus}
+                        changeTaskTitle = {props.changeTaskTitle}
+                        task = {t}
+                        todolistId = {props.id}
+                    />)
                 }
             </List>
             <div>
