@@ -14,7 +14,7 @@ import {
 } from "./state/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState, store} from "./state/store";
+import {AppRootStateType, store} from "./state/store";
 
 export type FilterValuesType = "all" | "completed" | "active"
 
@@ -69,8 +69,8 @@ function AppWithRedux() {
     }, [dispatch])
 
     // const dispatch = useDispatch()
-    const todoLists = useSelector<AppRootState, Array<todoListType>>(state => state.todolists)
-    const tasksObj = useSelector<AppRootState, TasksStateType>(state => state.tasks)
+    const todoLists = useSelector<AppRootStateType, Array<todoListType>>(state => state.todolists)
+    const tasksObj = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     return (
         <div className="App">
